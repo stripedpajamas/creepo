@@ -58,6 +58,11 @@ const questions = [
     type: prev => prev ? null : 'text',
     message: 'What do you want to name the repo?',
     name: 'repoName'
+  },
+  {
+    type: 'text',
+    message: 'A description for the repo, if you want:',
+    name: 'description'
   }
 ]
 
@@ -87,6 +92,7 @@ const main = async () => {
     const res = await createRepo({
       name,
       user: config.username,
+      description: answers.description,
       token: config.token
     }).catch((e) => {
       console.log('Repo creation failed :(', e.message || e)
@@ -112,7 +118,11 @@ const main = async () => {
         // git has already been initialized
         gitCmds.shift()
       }
-      gitCmds.forEach(cmd => child.execSync(cmd))
+      gitCmds.forEach(cmd => {
+        try {
+          child.execSync(cmd)
+        } catch (e) { }
+      })
       console.log('Done')
     }
   }
