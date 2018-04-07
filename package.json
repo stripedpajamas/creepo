@@ -1,0 +1,37 @@
+{
+  "name": "creepo",
+  "version": "1.0.0",
+  "description": "remotely create github repos",
+  "main": "index.js",
+  "bin": {
+    "creepo": "index.js"
+  },
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stripedpajamas/creepo.git"
+  },
+  "keywords": [
+    "github",
+    "gh",
+    "repo",
+    "repository",
+    "remote",
+    "cli"
+  ],
+  "author": "Peter Squicciarini <stripedpajamas273@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stripedpajamas/creepo/issues"
+  },
+  "homepage": "https://github.com/stripedpajamas/creepo#readme",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "node-fetch": "^2.1.2",
+    "prompts": "^0.1.8"
+  }
+}
