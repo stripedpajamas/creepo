@@ -1,6 +1,6 @@
 {
   "name": "creepo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "remotely create github repos",
   "main": "index.js",
   "bin": {
