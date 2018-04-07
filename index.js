@@ -3,6 +3,7 @@ const fs = require('fs')
 const os = require('os')
 const child = require('child_process')
 const path = require('path')
+const c = require('clorox')
 const fetch = require('node-fetch')
 const prompts = require('prompts')
 
@@ -50,7 +51,7 @@ const questions = [
   },
   {
     type: 'confirm',
-    message: `Create repo named ${currentFolder}?`,
+    message: `Create repo named ${c.underline(currentFolder)}?`,
     initial: true,
     name: 'useCurrentFolder'
   },
@@ -76,7 +77,7 @@ const main = async () => {
         fs.mkdirSync(configDir)
       }
       fs.writeFileSync(configFilePath, JSON.stringify(config, null, 4))
-      console.log(`Config file saved to ${configFilePath}`)
+      console.log(`${c.bold(`Config file saved to ${c.underline(configFilePath)}`)}`)
     }
   }
 
@@ -88,23 +89,23 @@ const main = async () => {
   }
 
   if (name && config.username && config.token) {
-    console.log(`Creating repo ${name}`)
+    console.log(`  ${c.bold(`Creating repo ${c.underline(name)}`)}`)
     const res = await createRepo({
       name,
       user: config.username,
       description: answers.description,
       token: config.token
     }).catch((e) => {
-      console.log('Repo creation failed :(', e.message || e)
+      console.log(`  ${c.red.bold('Repo creation failed :(')}`, e.message || e)
       process.exit(1)
     })
 
     if (!res.clone_url) {
-      console.log('Something went wrong :(')
+      console.log(`  ${c.red.bold('Something went wrong :(')}`)
       process.exit(1)
     }
 
-    console.log('Repo created successfully!', res.clone_url)
+    console.log(`  ${c.bold('Repo created successfully!')}`, `${c.italic(res.clone_url)}`)
 
     const runGit = await prompts({
       type: 'confirm',
@@ -114,7 +115,7 @@ const main = async () => {
 
     if (runGit) {
       const gitCmds = ['git init', `git remote add origin ${res.clone_url}`]
-      if (fs.existsSync(path.join(__dirname, '.git'))) {
+      if (fs.existsSync(path.join(process.cwd(), '.git'))) {
         // git has already been initialized
         gitCmds.shift()
       }
@@ -123,7 +124,7 @@ const main = async () => {
           child.execSync(cmd)
         } catch (e) { }
       })
-      console.log('Done')
+      console.log(`  ${c.bold('All done! 🐹')}`)
     }
   }
 }

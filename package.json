@@ -31,6 +31,7 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
+    "clorox": "^1.0.3",
     "node-fetch": "^2.1.2",
     "prompts": "^0.1.8"
   }

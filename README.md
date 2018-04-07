@@ -4,7 +4,7 @@ a small cli to help create GitHub repos remotely.
 
 i hate going to the website to create a repo after i've written some code.
 
-![creepo in action](https://cldup.com/w0PROnR3Qt.png)
+![creepo in action](https://cldup.com/jEpbQtDSKw.png)
 
 ## usage
 
