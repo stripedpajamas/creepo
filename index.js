@@ -25,7 +25,7 @@ const configDir = path.join(os.homedir(), '.creepo')
 const configFilePath = path.join(configDir, 'config.json')
 const configDirExists = fs.existsSync(configDir)
 const configFileExists = fs.existsSync(configFilePath)
-const currentFolder = __dirname.split(path.sep).slice(-1)[0]
+const currentFolder = process.cwd().split(path.sep).slice(-1)[0]
 
 if (configFileExists) {
   config = require(configFilePath)
