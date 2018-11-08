@@ -7,7 +7,8 @@
     "creepo": "index.js"
   },
   "scripts": {
-    "test": "standard"
+    "lint": "standard",
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,7 @@
   },
   "dependencies": {
     "clorox": "^1.0.3",
-    "node-fetch": "^2.1.2",
-    "prompts": "^0.1.8"
+    "prompts": "^0.1.8",
+    "@octokit/rest": "^15.16.1"
   }
 }

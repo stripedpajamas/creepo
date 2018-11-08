@@ -4,21 +4,8 @@ const os = require('os')
 const child = require('child_process')
 const path = require('path')
 const c = require('clorox')
-const fetch = require('node-fetch')
 const prompts = require('prompts')
-
-const createRepo = ({ name, description, username, token }) => {
-  const auth = Buffer.from(`${username}:${token}`).toString('base64')
-  return fetch('https://api.github.com/user/repos', {
-    method: 'POST',
-    body: JSON.stringify({ name, description }),
-    headers: {
-      'Authorization': `Basic ${auth}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    }
-  }).then(res => res.json())
-}
+const octokit = require('@octokit/rest')()
 
 // begin
 let config = {}
@@ -90,22 +77,21 @@ const main = async () => {
 
   if (name && config.username && config.token) {
     console.log(`  ${c.bold(`Creating repo ${c.underline(name)}`)}`)
-    const res = await createRepo({
+    octokit.authenticate({ type: 'token', token: config.token })
+    const res = await octokit.repos.create({
       name,
-      user: config.username,
-      description: answers.description,
-      token: config.token
+      description: answers.description
     }).catch((e) => {
       console.log(`  ${c.red.bold('Repo creation failed :(')}`, e.message || e)
       process.exit(1)
     })
 
-    if (!res.clone_url) {
+    if (!res.data || !res.data.clone_url) {
       console.log(`  ${c.red.bold('Something went wrong :(')}`)
       process.exit(1)
     }
 
-    console.log(`  ${c.bold('Repo created successfully!')}`, `${c.italic(res.clone_url)}`)
+    console.log(`  ${c.bold('Repo created successfully!')}`, `${c.italic(res.data.clone_url)}`)
 
     const runGit = await prompts({
       type: 'confirm',
@@ -114,7 +100,7 @@ const main = async () => {
     })
 
     if (runGit) {
-      const gitCmds = ['git init', `git remote add origin ${res.clone_url}`]
+      const gitCmds = ['git init', `git remote add origin ${res.data.clone_url}`]
       if (fs.existsSync(path.join(process.cwd(), '.git'))) {
         // git has already been initialized
         gitCmds.shift()
