@@ -78,7 +78,7 @@ const main = async () => {
   if (name && config.username && config.token) {
     console.log(`  ${c.bold(`Creating repo ${c.underline(name)}`)}`)
     octokit.authenticate({ type: 'token', token: config.token })
-    const res = await octokit.repos.create({
+    const res = await octokit.repos.createForAuthenticatedUser({
       name,
       description: answers.description
     }).catch((e) => {
@@ -93,8 +93,9 @@ const main = async () => {
 
     console.log(`  ${c.bold('Repo created successfully!')}`, `${c.italic(res.data.clone_url)}`)
 
-    const runGit = await prompts({
+    const { runGit } = await prompts({
       type: 'confirm',
+      name: 'runGit',
       initial: true,
       message: 'Would you like me to configure this directory to use the new repo?'
     })
@@ -110,8 +111,8 @@ const main = async () => {
           child.execSync(cmd)
         } catch (e) { }
       })
-      console.log(`  ${c.bold('All done! 🐹')}`)
     }
+    console.log(`  ${c.bold('All done! 🐹')}`)
   }
 }
 
