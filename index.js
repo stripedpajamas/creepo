@@ -3,9 +3,10 @@ const fs = require('fs')
 const os = require('os')
 const child = require('child_process')
 const path = require('path')
-const c = require('clorox')
+const c = require('colorette')
 const prompts = require('prompts')
-const octokit = require('@octokit/rest')()
+const Octokit = require('@octokit/rest')
+
 
 // begin
 let config = {}
@@ -77,7 +78,9 @@ const main = async () => {
 
   if (name && config.username && config.token) {
     console.log(`  ${c.bold(`Creating repo ${c.underline(name)}`)}`)
-    octokit.authenticate({ type: 'token', token: config.token })
+    const octokit = new Octokit({
+      auth: `token ${config.token}`
+    })
     const res = await octokit.repos.createForAuthenticatedUser({
       name,
       description: answers.description

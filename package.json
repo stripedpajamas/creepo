@@ -32,8 +32,8 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "@octokit/rest": "^15.18.1",
-    "clorox": "^1.0.3",
-    "prompts": "^0.1.14"
+    "@octokit/rest": "^16.19.0",
+    "colorette": "^1.0.7",
+    "prompts": "^2.0.0"
   }
 }
