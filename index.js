@@ -5,7 +5,7 @@ const child = require('child_process')
 const path = require('path')
 const c = require('colorette')
 const prompts = require('prompts')
-const Octokit = require('@octokit/rest')
+const { Octokit } = require('@octokit/rest')
 
 
 // begin
